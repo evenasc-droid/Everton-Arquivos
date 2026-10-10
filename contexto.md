@@ -1,0 +1,1 @@
+analise as principais perdas no setor Everton nascimento com base no relatório plano tático 2026. colque por ordem de valor e percentual mais acentuado. análise as perdas do mercado e se minhas perdas são maiores que a do mercado.

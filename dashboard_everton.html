@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Estratégico - Everton Nascimento</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            font-weight: 600;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #334155;
+        }
+
+        .card-title {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-sub {
+            font-size: 0.875rem;
+            color: var(--accent-green);
+        }
+
+        /* CSS Bar Charts */
+        .chart-container {
+            margin-top: 1rem;
+        }
+
+        .bar-group {
+            margin-bottom: 1rem;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .bar-bg {
+            background-color: #334155;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 6px;
+            transition: width 1s ease-in-out;
+        }
+
+        .bar-fill.green { background: linear-gradient(90deg, #059669, #10b981); }
+        .bar-fill.red { background: linear-gradient(90deg, #b91c1c, #ef4444); }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        .tag-green { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .tag-red { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+
+        .orientacoes li {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Dashboard Estratégico - Plano Tático 2026</h1>
+        <p>Análise de Performance: <strong>Everton Nascimento Silva</strong></p>
+    </div>
+
+    <!-- Seção 1: KPIs Globais -->
+    <h2 style="margin-bottom: 1rem; color: #cbd5e1;">1. Representatividade no Mercado Total</h2>
+    <div class="grid">
+        <div class="card">
+            <div class="card-title">Oportunidades Totais (OP VB)</div>
+            <div class="stat-value">R$ 524,9 Mi</div>
+            <div class="stat-sub">
+                <span class="tag tag-green">23% do Mercado Total</span> (Mercado: R$ 2,28 Bi)
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">Volume de Compras (CUP VB)</div>
+            <div class="stat-value">R$ 1,41 Bi</div>
+            <div class="stat-sub">
+                <span class="tag tag-green">26,7% do Mercado Total</span> (Mercado: R$ 5,28 Bi)
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 2: Comparativo de Share -->
+    <h2 style="margin-bottom: 1rem; color: #cbd5e1;">2. Market Share vs Pares (2025)</h2>
+    <div class="grid">
+        <div class="card">
+            <div class="card-title">Setor: HOSPITAIS E CLÍNICAS</div>
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">Onde você domina. O seu forte tracionamento resulta no 2º melhor Share da equipe.</p>
+            <div class="chart-container">
+                <div class="bar-group">
+                    <div class="bar-label"><span>Caroline</span><span>81.58%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 81.58%"></div></div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label"><span style="color:var(--accent-blue); font-weight:bold;">Everton</span><span style="color:var(--accent-blue); font-weight:bold;">46.83%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 46.83%"></div></div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label"><span>José Carlos</span><span>45.24%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 45.24%"></div></div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label"><span>Média do Mercado</span><span>43.18%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 43.18%; background: #64748b;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Setor: ACESSO</div>
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">O seu gargalo. Alta oportunidade, mas com grande diluição frente aos pares.</p>
+            <div class="chart-container">
+                <div class="bar-group">
+                    <div class="bar-label"><span>José Carlos</span><span>70.38%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 70.38%"></div></div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label"><span>Caroline</span><span>44.70%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 44.70%"></div></div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label"><span>Média do Mercado</span><span>43.18%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" style="width: 43.18%; background: #64748b;"></div></div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-label"><span style="color:var(--accent-blue); font-weight:bold;">Everton</span><span style="color:var(--accent-blue); font-weight:bold;">26.24%</span></div>
+                    <div class="bar-bg"><div class="bar-fill red" style="width: 26.24%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 3: Itens -->
+    <h2 style="margin-bottom: 1rem; color: #cbd5e1;">3. Performance de Itens (Marcas)</h2>
+    <div class="grid">
+        <div class="card">
+            <div class="card-title">Campeões de Performance (Ganho de Share)</div>
+            
+            <div style="margin-top: 1rem;">
+                <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #334155;">
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">GSK</div>
+                    <span class="tag tag-green">Share: 51.8% ➔ 76.1%</span>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">Crescimento de +282% em OP. Altíssimo volume convertido com sucesso.</p>
+                </div>
+                
+                <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #334155;">
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">MSD</div>
+                    <span class="tag tag-green">Share: 14.7% ➔ 48.0%</span>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">Crescimento de +415% em OP. Forte tração no ganho de fatia de mercado.</p>
+                </div>
+
+                <div>
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">TAKEDA VACINAS</div>
+                    <span class="tag tag-green">Share: 26.4% ➔ 95.8%</span>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">Domínio quase total de mercado frente à concorrência neste período.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="border-color: rgba(239, 68, 68, 0.3);">
+            <div class="card-title" style="color: var(--accent-red);">Alerta: A Maior Oportunidade Reprimida</div>
+            
+            <div style="margin-top: 1rem;">
+                <div style="font-weight: 600; margin-bottom: 0.25rem; font-size: 1.25rem;">PFIZER VACINAS</div>
+                <div style="margin: 1rem 0;">
+                    <span class="tag tag-red">Queda de Share: 60.8% ➔ 57.0%</span>
+                </div>
+                <p style="font-size: 0.95rem; line-height: 1.5; color: #cbd5e1;">
+                    Este é o item com a <strong>maior oportunidade bruta atual</strong> (OP YTD: 214.058). 
+                    As oportunidades cresceram vertiginosos 470%, mas a taxa de conversão não acompanhou e o share encolheu.
+                </p>
+                <div style="margin-top: 1.5rem; background-color: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px;">
+                    <strong style="color: var(--accent-red); font-size: 0.875rem; text-transform: uppercase;">Ação Imediata:</strong>
+                    <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #cbd5e1;">Recuperar a eficiência de conversão aqui é onde existe o maior dinheiro na mesa atualmente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção 4: Orientações -->
+    <h2 style="margin-bottom: 1rem; color: #cbd5e1; margin-top: 2rem;">4. Orientações e Próximos Passos</h2>
+    <div class="card">
+        <ul class="orientacoes" style="padding-left: 1rem; margin: 0;">
+            <li><strong>Replique a Estratégia de Hospitais e Clínicas:</strong> Você tem um Share excelente (46,8%) lidando com alto volume neste setor. Entenda quais práticas de fechamento estão funcionando aqui e aplique urgentemente nas negociações de <em>Acesso</em>.</li>
+            <li><strong>Estanque a Sangria no Setor de Acesso:</strong> Embora seu volume em <em>Acesso</em> seja o 2º maior da equipe, sua fatia de Share (26%) é a menor do grupo. A prioridade tática deve ser focar no relacionamento e alinhamento de funil com estes clientes para evitar o escape de negócios.</li>
+            <li><strong>Força Tarefa em Pfizer Vacinas:</strong> Uma campanha ou revisão de propostas focada em Pfizer Vacinas tem o potencial de virar o seu jogo a curto prazo. O volume de oportunidade está lá, só falta reverter a queda de conversão.</li>
+            <li><strong>Escale com MSD e GSK:</strong> Use o bom momento (forte aumento de share) destes laboratórios para puxar vendas cruzadas (cross-sell) ou amarrar condições comerciais onde você ainda sofre em penetração.</li>
+        </ul>
+    </div>
+
+</body>
+</html>
