@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Estratégico Interativo - Everton Nascimento</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --border-color: #334155;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        h1, h2, h3 { margin-top: 0; font-weight: 600; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Filtros */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        .filter-group select {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        /* Seções */
+        .section-title {
+            margin: 2rem 0 1rem 0;
+            color: #cbd5e1;
+            font-size: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }
+
+        .card-title {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        .tag-green { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .tag-red { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .tag-blue { background-color: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+
+        /* Gráficos de Barra */
+        .chart-container { margin-top: 1rem; }
+        .bar-group { margin-bottom: 1rem; }
+        .bar-label { display: flex; justify-content: space-between; margin-bottom: 0.25rem; font-size: 0.875rem; }
+        .bar-bg { background-color: var(--border-color); height: 12px; border-radius: 6px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 6px; transition: width 0.5s ease-in-out; }
+        
+        .fill-normal { background: linear-gradient(90deg, #475569, #64748b); }
+        .fill-highlight { background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); }
+        .fill-highlight-red { background: linear-gradient(90deg, #b91c1c, #ef4444); }
+        .fill-market { background: #334155; border: 1px dashed #94a3b8; }
+
+        /* Tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        tr:last-child td { border-bottom: none; }
+        .hidden { display: none !important; }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-title">
+            <h1>Painel Estratégico 2026</h1>
+            <p><strong>Everton Nascimento Silva</strong> | Visão Monolítica</p>
+        </div>
+        <div class="filters">
+            <div class="filter-group">
+                <label>Setor</label>
+                <select id="filter-setor" onchange="applyFilters()">
+                    <option value="todos">Todos os Setores</option>
+                    <option value="acesso">Acesso</option>
+                    <option value="hospitais">Hospitais e Clínicas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Performance (Itens)</label>
+                <select id="filter-status" onchange="applyFilters()">
+                    <option value="todos">Todas</option>
+                    <option value="crescimento">Em Crescimento</option>
+                    <option value="alerta">Em Alerta / Queda</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. KPIs -->
+    <h2 class="section-title">1. KPIs Principais</h2>
+    <div class="grid" id="kpi-container">
+        <!-- Preenchido via JS -->
+    </div>
+
+    <!-- 2. Gráficos -->
+    <h2 class="section-title">2. Gráficos de Market Share vs Pares</h2>
+    <div class="grid" id="chart-container">
+        <!-- Preenchido via JS -->
+    </div>
+
+    <!-- 3. Cards Resumo (Itens) -->
+    <h2 class="section-title">3. Cards Resumo de Performance (Marcas)</h2>
+    <div class="grid" id="items-container">
+        <!-- Preenchido via JS -->
+    </div>
+
+    <!-- 4. Tabela Resumo -->
+    <h2 class="section-title">4. Tabela Analítica Consolidada</h2>
+    <div style="overflow-x: auto;">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Setor / Visão</th>
+                    <th>Indicador</th>
+                    <th>Seu Valor</th>
+                    <th>Ref. Mercado</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Preenchido via JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Dados Estruturados
+        const kpiData = {
+            acesso: [
+                { title: "Oportunidades (Acesso)", val: "R$ 175,2 Mi", sub: "2º Maior Volume da Equipe" },
+                { title: "Perdas (Acesso)", val: "R$ 334 Mil", sub: "Baixo impacto financeiro absoluto", type: "blue" }
+            ],
+            hospitais: [
+                { title: "Oportunidades (Hospitais)", val: "R$ 349,6 Mi", sub: "2º Maior Volume da Equipe" },
+                { title: "Perdas (Hospitais)", val: "R$ 88,5 Mi", sub: "Alta Concentração de Perdas", type: "red" }
+            ],
+            todos: [
+                { title: "Volume de Compras (CUP)", val: "R$ 1,41 Bi", sub: "26,7% do Mercado", type: "green" },
+                { title: "Oportunidades Totais", val: "R$ 524,9 Mi", sub: "23,0% do Mercado", type: "green" },
+                { title: "Perdas Totais", val: "R$ 88,9 Mi", sub: "17,1% das Perdas do Mercado", type: "red" }
+            ]
+        };
+
+        const chartData = {
+            hospitais: {
+                title: "HOSPITAIS E CLÍNICAS (Share %)",
+                desc: "Seu domínio. Forte tracionamento resultando no 2º melhor Share.",
+                data: [
+                    { name: "Caroline", share: 81.58, class: "fill-normal" },
+                    { name: "Everton", share: 46.83, class: "fill-highlight", isYou: true },
+                    { name: "José Carlos", share: 45.24, class: "fill-normal" },
+                    { name: "Média Mercado", share: 43.18, class: "fill-market" }
+                ]
+            },
+            acesso: {
+                title: "ACESSO (Share %)",
+                desc: "Seu gargalo. Alta oportunidade, mas grande diluição.",
+                data: [
+                    { name: "José Carlos", share: 70.38, class: "fill-normal" },
+                    { name: "Caroline", share: 44.70, class: "fill-normal" },
+                    { name: "Média Mercado", share: 43.18, class: "fill-market" },
+                    { name: "Everton", share: 26.24, class: "fill-highlight-red", isYou: true }
+                ]
+            }
+        };
+
+        const itemsData = [
+            { name: "GSK", shareBefore: 51.8, shareAfter: 76.1, op: "+282%", status: "crescimento", desc: "Altíssimo volume convertido com sucesso." },
+            { name: "MSD", shareBefore: 14.7, shareAfter: 48.0, op: "+415%", status: "crescimento", desc: "Forte tração no ganho de fatia de mercado." },
+            { name: "TAKEDA VACINAS", shareBefore: 26.4, shareAfter: 95.8, op: "+187%", status: "crescimento", desc: "Domínio quase total de mercado." },
+            { name: "PFIZER VACINAS", shareBefore: 60.8, shareAfter: 57.0, op: "+470%", status: "alerta", desc: "Maior OP bruta, queda de Share (Dinheiro na mesa)." }
+        ];
+
+        const tableData = [
+            { setor: "hospitais", setorLabel: "Hospitais e Clínicas", ind: "Market Share", val: "46.83%", ref: "43.18%", status: "crescimento" },
+            { setor: "acesso", setorLabel: "Acesso", ind: "Market Share", val: "26.24%", ref: "43.18%", status: "alerta" },
+            { setor: "todos", setorLabel: "Geral", ind: "Representatividade OP", val: "23.00%", ref: "N/A", status: "crescimento" },
+            { setor: "todos", setorLabel: "Geral", ind: "Total Perdas", val: "R$ 88.9 Mi", ref: "R$ 517.4 Mi", status: "alerta" }
+        ];
+
+        // Lógica de Renderização e Filtro
+        function renderKPIs(setorFilter) {
+            const container = document.getElementById('kpi-container');
+            container.innerHTML = '';
+            
+            let kpisToRender = [];
+            if (setorFilter === 'todos') {
+                kpisToRender = [...kpiData.todos, ...kpiData.hospitais.slice(1), ...kpiData.acesso.slice(1)];
+            } else {
+                kpisToRender = kpiData[setorFilter];
+            }
+
+            kpisToRender.forEach(k => {
+                let tagClass = k.type === 'red' ? 'tag-red' : k.type === 'blue' ? 'tag-blue' : 'tag-green';
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="card-title">${k.title}</div>
+                        <div class="stat-value">${k.val}</div>
+                        <div class="stat-sub"><span class="tag ${tagClass}">${k.sub}</span></div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderCharts(setorFilter) {
+            const container = document.getElementById('chart-container');
+            container.innerHTML = '';
+
+            const renderBar = (chart) => {
+                let html = `
+                <div class="card">
+                    <div class="card-title">${chart.title}</div>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">${chart.desc}</p>
+                    <div class="chart-container">
+                `;
+                chart.data.forEach(bar => {
+                    let styleText = bar.isYou ? 'style="color:var(--accent-blue); font-weight:bold;"' : '';
+                    html += `
+                        <div class="bar-group">
+                            <div class="bar-label"><span ${styleText}>${bar.name}</span><span ${styleText}>${bar.share}%</span></div>
+                            <div class="bar-bg"><div class="bar-fill ${bar.class}" style="width: ${bar.share}%"></div></div>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+                return html;
+            };
+
+            if (setorFilter === 'todos' || setorFilter === 'hospitais') container.innerHTML += renderBar(chartData.hospitais);
+            if (setorFilter === 'todos' || setorFilter === 'acesso') container.innerHTML += renderBar(chartData.acesso);
+        }
+
+        function renderItems(statusFilter) {
+            const container = document.getElementById('items-container');
+            container.innerHTML = '';
+
+            itemsData.forEach(item => {
+                if (statusFilter !== 'todos' && item.status !== statusFilter) return;
+
+                let isAlerta = item.status === 'alerta';
+                let tagClass = isAlerta ? 'tag-red' : 'tag-green';
+                let borderStyle = isAlerta ? 'border-color: rgba(239, 68, 68, 0.4);' : '';
+
+                container.innerHTML += `
+                    <div class="card" style="${borderStyle}">
+                        <div class="card-title" style="${isAlerta ? 'color: var(--accent-red);' : ''}">${item.name}</div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <span class="tag ${tagClass}">Share: ${item.shareBefore}% ➔ ${item.shareAfter}%</span>
+                        </div>
+                        <div style="font-size: 0.875rem; margin-bottom: 0.5rem; color: #cbd5e1;">Crescimento OP: <strong>${item.op}</strong></div>
+                        <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0;">${item.desc}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function renderTable(setorFilter, statusFilter) {
+            const tbody = document.querySelector('#data-table tbody');
+            tbody.innerHTML = '';
+
+            tableData.forEach(row => {
+                let showSetor = (setorFilter === 'todos' || row.setor === setorFilter || row.setor === 'todos');
+                let showStatus = (statusFilter === 'todos' || row.status === statusFilter);
+
+                if (showSetor && showStatus) {
+                    let statusLabel = row.status === 'alerta' ? '<span class="tag tag-red">Alerta</span>' : '<span class="tag tag-green">Positivo</span>';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${row.setorLabel}</strong></td>
+                            <td>${row.ind}</td>
+                            <td style="color: var(--text-main); font-weight: 600;">${row.val}</td>
+                            <td style="color: var(--text-muted);">${row.ref}</td>
+                            <td>${statusLabel}</td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+
+        function applyFilters() {
+            const setor = document.getElementById('filter-setor').value;
+            const status = document.getElementById('filter-status').value;
+            
+            renderKPIs(setor);
+            renderCharts(setor);
+            renderItems(status);
+            renderTable(setor, status);
+        }
+
+        // Init
+        applyFilters();
+
+    </script>
+</body>
+</html>
